@@ -1,19 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTermDto } from './dto/create-term.dto';
 import { UpdateTermDto } from './dto/update-term.dto';
+import { termRepository } from './constants';
+import { Term } from './entities/term.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TermsService {
-  create(createTermDto: CreateTermDto) {
-    return 'This action adds a new term';
-  }
+  constructor(
+    @Inject(termRepository)
+    private termRepository: Repository<Term>,
+  ) {}
 
   findAll() {
-    return `This action returns all terms`;
+    return this.termRepository.find({
+      relations: ['tasks'],
+      order: {
+        tasks: {
+          task_num: 'ASC',
+        },
+      },
+      select: {
+        tasks: {
+          task_name: true,
+          task_num: true,
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} term`;
+  async findOne(id: Term['id']) {
+    const term = await this.termRepository.findOne({
+      where: { id },
+      order: {
+        tasks: {
+          task_num: 'ASC',
+        },
+      },
+      relations: ['tasks'],
+    });
+
+    if (!term) {
+      throw new NotFoundException('Term not found'); 
+    }
+    return term;
+  }
+
+  create(createTermDto: CreateTermDto) {
+    return 'This action adds a new term';
   }
 
   update(id: number, updateTermDto: UpdateTermDto) {

@@ -1,9 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateTokenDto } from './dto/create-token.dto';
 import { UpdateTokenDto } from './dto/update-token.dto';
+import { tokenRepository } from './constants';
+import { Repository } from 'typeorm';
+import { Token } from './entities/token.entity';
 
 @Injectable()
 export class TokenService {
+  constructor(
+    @Inject(tokenRepository)
+    private tokenRepository: Repository<Token>,
+  ) {}
   create(createTokenDto: CreateTokenDto) {
     return 'This action adds a new token';
   }

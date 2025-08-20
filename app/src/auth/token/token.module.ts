@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TokenService } from './token.service';
-import { TokenController } from './token.controller';
+import { DatabaseModule } from 'src/database/database.module';
+import { tokenProviders } from './token.provider';
 
 @Module({
-  controllers: [TokenController],
-  providers: [TokenService],
+  imports: [DatabaseModule],
+  providers: [...tokenProviders, TokenService],
+  exports: [TokenService],
 })
 export class TokenModule {}

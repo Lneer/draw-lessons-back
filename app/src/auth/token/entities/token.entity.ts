@@ -14,18 +14,19 @@ export class Token extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   token_id: string;
 
-  @Column({ type: 'character', length: 64 })
+  @Column({ type: 'character varying', length: 128 })
   access_token: string;
 
-  @Column({ type: 'character', length: 64 })
+  @Column({ type: 'character varying', length: 128 })
   refresh_token: string;
 
-  @CreateDateColumn({ type: 'date' })
+  @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  @CreateDateColumn({ type: 'date' })
+  @CreateDateColumn({ type: 'timestamp' })
   changed_at: Date;
 
+  @Column({ type: 'uuid', unique: true })
   @OneToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
