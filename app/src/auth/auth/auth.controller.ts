@@ -24,29 +24,23 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() signInDto: AuthDto) {
-    return this.authService.signIn({
-      email: signInDto.email,
-      password: signInDto.password,
-    });
+  @Post('register')
+  register(@Body() body: AuthDto) {
+    const { email, password } = body;
+    return this.authService.register({ email, password });
   }
 
-  @Post('auth/login')
+  @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
+  @Post('login')
   login(@Request() req: AuthRequest) {
     return this.authService.login(req.user);
   }
 
-  @Get('auth/profile')
+  @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  getProfile(@Request() req: AuthRequest) {
-    return req.user;
-  }
-
-  @UseGuards(LocalAuthGuard)
-  @Post('auth/logout')
-  logout(@Request() req: AuthRequest) {
-    return req.logout();
+  @Get('refresh')
+  refresh(@Request() req: AuthRequest) {
+    return this.authService.refresh(req.user);
   }
 }

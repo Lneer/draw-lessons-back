@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+// import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { userRepository } from './constants';
@@ -11,10 +11,6 @@ export class UserService {
     @Inject(userRepository)
     private userRepository: Repository<User>,
   ) {}
-
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
 
   findAll() {
     return `This action returns all user`;
@@ -38,8 +34,8 @@ export class UserService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  create(createUserDto: CreateUserDto) {
+    return this.userRepository.save(createUserDto);
   }
 
   remove(id: number) {
