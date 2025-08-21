@@ -20,14 +20,14 @@ export class Task extends BaseEntity {
   @Column({ length: 128 })
   task_name: string;
 
-  @Column('text')
+  @Column({ type: 'character varying', length: 128, default: '' })
   task_guide: string;
 
-  @Column('text')
-  task_additional: string;
+  @Column({ type: 'simple-array', default: '' })
+  task_additional: string[];
 
-  @Column({ type: 'int8', unsigned: true })
-  task_control_number: boolean;
+  @Column({ type: 'int8', unsigned: true, default: 0 })
+  task_control_number: number;
 
   @Column({ type: 'boolean', default: true })
   is_task_necessarily: boolean;

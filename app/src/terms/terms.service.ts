@@ -14,6 +14,9 @@ export class TermsService {
 
   findAll() {
     return this.termRepository.find({
+      where: {
+        is_active: true,
+      },
       relations: ['tasks'],
       order: {
         tasks: {
@@ -31,7 +34,7 @@ export class TermsService {
 
   async findOne(id: Term['id']) {
     const term = await this.termRepository.findOne({
-      where: { id },
+      where: { id, is_active: true },
       order: {
         tasks: {
           task_num: 'ASC',
@@ -41,20 +44,30 @@ export class TermsService {
     });
 
     if (!term) {
-      throw new NotFoundException('Term not found'); 
+      throw new NotFoundException('Term not found');
     }
     return term;
   }
 
   create(createTermDto: CreateTermDto) {
-    return 'This action adds a new term';
+    return this.termRepository.save(createTermDto);
   }
 
-  update(id: number, updateTermDto: UpdateTermDto) {
-    return `This action updates a #${id} term`;
+  async update(id: Term['id'], updateTermDto: UpdateTermDto) {
+    const entityToUpdate = await this.termRepository.findOne({
+      where: { id },
+    });
+    if (!entityToUpdate) {
+      throw new NotFoundException('Term not found');
+    }
+    return this.termRepository.save({ ...entityToUpdate, ...updateTermDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} term`;
+  async isOrderExist(order: Term['order']) {
+    return !!(await this.termRepository.count({
+      where: {
+        order,
+      },
+    }));
   }
 }

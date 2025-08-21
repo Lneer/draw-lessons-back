@@ -16,16 +16,16 @@ export class Term extends BaseEntity {
   @Column({ unsigned: true, type: 'int8', unique: true })
   order: number;
 
-  @Column({ length: 128 })
+  @Column({ type: 'character varying', length: 16, nullable: false })
   name: string;
 
-  @Column('text')
+  @Column({ type: 'character varying', length: 128, default: '' })
   info: string;
 
-  @Column()
+  @Column({ unsigned: true, type: 'int8', default: 0 })
   term_control_number: number;
 
-  @Column('boolean')
+  @Column({ type: 'boolean', default: true })
   is_active: boolean;
 
   @CreateDateColumn()
