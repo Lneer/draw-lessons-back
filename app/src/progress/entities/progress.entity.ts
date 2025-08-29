@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Task } from 'src/tasks/entities/task.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -16,10 +17,10 @@ export class Progress extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'int8', unsigned: true, default: 0 })
+  @Column({ type: 'smallint', unsigned: true, default: 0 })
   homework_count: number;
 
-  @Column({ type: 'int8', unsigned: true, default: 0 })
+  @Column({ type: 'smallint', unsigned: true, default: 0 })
   feedback_count: number;
 
   @Column({ type: 'boolean', default: false })
@@ -30,6 +31,12 @@ export class Progress extends BaseEntity {
 
   @CreateDateColumn({ type: 'date' })
   changed_at: Date;
+
+  @Column({ type: 'uuid' })
+  task_id: string;
+
+  @Column({ type: 'uuid' })
+  user_id: string;
 
   @OneToOne(() => Task)
   @JoinColumn({ name: 'task_id' })

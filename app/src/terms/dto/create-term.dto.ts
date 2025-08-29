@@ -7,9 +7,12 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { ITerm } from '../terms.type';
+import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { Term } from '../entities/term.entity';
 
-export class CreateTermDto implements ITerm {
+export class CreateTermDto extends PartialType(
+  OmitType(Term, ['changed_at', 'created_at'] as const),
+) {
   @Length(3, 16, { message: `Min ${3} Max ${16}` })
   @IsString()
   name: string;
