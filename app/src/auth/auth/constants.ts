@@ -4,15 +4,18 @@ export const jwtConstants = {
   secret: 'DRAW LESSONS',
 };
 
-export type LoginPayload = {
-  email: User['user_name'];
+export interface LoginPayload {
+  email: User['user_email'];
   sub: User['user_id'];
-};
-
-export interface AuthRequest extends Request {
-  user: User;
-  logout: () => void;
 }
-export interface JWtRequest extends Request {
-  user: LoginPayload;
+
+export interface LocalAuthRequest {
+  user: User;
+}
+
+export interface JwtAuthRequest {
+  user: {
+    email: User['user_email'];
+    sub: User['user_id'];
+  };
 }
