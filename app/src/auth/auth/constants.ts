@@ -1,21 +1,19 @@
 import { User } from 'src/user/entities/user.entity';
+import type { Request } from 'express';
 
 export const jwtConstants = {
   secret: 'DRAW LESSONS',
 };
 
-export interface LoginPayload {
+export type LoginPayload = {
   email: User['user_email'];
   sub: User['user_id'];
-}
+};
 
-export interface LocalAuthRequest {
+export type LocalAuthRequest = Request & {
   user: User;
-}
+};
 
-export interface JwtAuthRequest {
-  user: {
-    email: User['user_email'];
-    sub: User['user_id'];
-  };
-}
+export type JwtAuthRequest = Request & {
+  user: LoginPayload;
+};

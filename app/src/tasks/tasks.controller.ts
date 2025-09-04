@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
@@ -29,10 +28,7 @@ export class TasksController {
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateTaskDto: UpdateTaskDto,
-  ) {
+  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return await this.tasksService.update(id, updateTaskDto);
   }
 }

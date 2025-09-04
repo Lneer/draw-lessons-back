@@ -26,12 +26,7 @@ export class ProgressService {
 
   create(createProgressDto: CreateProgressDto) {
     return this.progressRepository.save(createProgressDto);
-    return 'This action adds a new progress';
   }
-
-  // findAll() {
-  //   return `This action returns all progress`;
-  // }
 
   findByUserId(user_id: User['user_id']) {
     return this.progressRepository.find({

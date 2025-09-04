@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ProgressService } from './progress.service';
 import { JwtAuthGuard } from 'src/auth/auth/guards/jwt-auth.guard';
-import type { JWtRequest } from 'src/auth/auth/constants';
+import type { JwtAuthRequest } from 'src/auth/auth/constants';
 import { CreateProgressDto } from './dto/create-progress.dto';
 import { TasksService } from 'src/tasks/tasks.service';
 // import { UpdateProgressDto } from './dto/update-progress.dto';
@@ -29,7 +29,7 @@ export class ProgressController {
   @HttpCode(HttpStatus.OK)
   async create(
     @Body() createProgressDto: CreateProgressDto,
-    @Request() req: JWtRequest,
+    @Request() req: JwtAuthRequest,
   ) {
     const { sub } = req.user;
     const { task_id } = createProgressDto;
@@ -51,7 +51,7 @@ export class ProgressController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  findOwn(@Request() req: JWtRequest) {
+  findOwn(@Request() req: JwtAuthRequest) {
     const { sub } = req.user;
     return this.progressService.findByUserId(sub);
   }

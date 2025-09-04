@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import type { AuthRequest } from './constants';
+import type { LocalAuthRequest } from './constants';
 
 @Controller('auth')
 export class AuthController {
@@ -28,14 +28,14 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(@Request() req: AuthRequest) {
+  login(@Request() req: LocalAuthRequest) {
     return this.authService.login(req.user);
   }
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   @Get('refresh')
-  refresh(@Request() req: AuthRequest) {
+  refresh(@Request() req: LocalAuthRequest) {
     return this.authService.refresh(req.user);
   }
 }
